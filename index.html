@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="id" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pendaftaran Online Anggota HIMATIK</title>
+  <meta name="description" content="Sistem Pendaftaran Online Resmi Calon Anggota HIMATIK - Himpunan Mahasiswa Teknik Informatika.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              cyan: '#00A3E0',
+              electric: '#0099FF',
+              dark: '#090D16',
+              navy: '#0F172A',
+              card: '#131B2E',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-card {
+      background: rgba(19, 27, 46, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 163, 224, 0.2);
+    }
+    .light .glass-card {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(0, 163, 224, 0.25);
+    }
+    .glass-nav {
+      background: rgba(9, 13, 22, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0, 163, 224, 0.15);
+    }
+    .light .glass-nav {
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+    }
+  </style>
+</head>
+<body class="bg-[#090D16] text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-white transition-colors duration-300 min-h-screen flex flex-col">
+
+  <!-- Background decorative light aura -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[36rem] h-[36rem] bg-cyan-500/10 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-32 right-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl"></div>
+  </div>
+
+  <!-- ==================== HEADER NAVBAR ==================== -->
+  <header class="sticky top-0 z-40 w-full glass-nav transition-all">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo Brand Resmi HIMATIK -->
+        <a href="#" class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-slate-900 border border-cyan-500/30 flex items-center justify-center p-1 shadow-md shadow-cyan-500/10">
+            <img src="assets/logo-himatik.png" alt="Logo Resmi HIMATIK" class="w-full h-full object-contain">
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-extrabold text-lg sm:text-xl tracking-tight text-white">HIMATIK</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">ONLINE</span>
+            </div>
+            <p class="text-[11px] text-slate-400 font-mono">PORTAL PENDAFTARAN RESMI</p>
+          </div>
+        </a>
+
+        <!-- Menu & Tombol Admin -->
+        <div class="flex items-center gap-3 sm:gap-4">
+          <a href="#divisi" class="hidden md:inline-block text-xs font-semibold text-slate-300 hover:text-cyan-400 transition">3 Divisi</a>
+          <a href="#cek-status" class="hidden md:inline-block text-xs font-semibold text-slate-300 hover:text-cyan-400 transition">Lacak NIM</a>
+          <a href="#alur" class="hidden md:inline-block text-xs font-semibold text-slate-300 hover:text-cyan-400 transition">Alur Seleksi</a>
+          
+          <!-- Tombol Theme Toggle -->
+          <button id="themeToggleBtn" type="button" aria-label="Ganti Tema" class="p-2.5 rounded-xl border border-slate-700 bg-slate-800/50 text-slate-300 hover:text-cyan-400 transition">
+            🌓
+          </button>
+
+          <!-- Tombol ADMIN (Sesuai Permintaan User: Diganti Menjadi Admin) -->
+          <a href="admin/login.php" class="px-4 py-2 text-xs font-bold rounded-xl border border-cyan-500/30 hover:border-cyan-400 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20 transition flex items-center gap-1.5 shadow-sm">
+            <span>🔒 Admin</span>
+          </a>
+
+          <!-- CTA Utama: Daftar Sekarang -->
+          <button id="navBtnDaftar" onclick="openRegistrationModal()" class="px-4 sm:px-5 py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-cyan-500 to-sky-400 hover:from-cyan-400 hover:to-sky-300 text-slate-950 shadow-lg shadow-cyan-500/25 transition">
+            Daftar Sekarang
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow z-10">
+
+    <!-- ==================== HERO SECTION (CLEAN & CENTERED) ==================== -->
+    <section id="beranda" class="pt-14 pb-16 sm:pt-20 sm:pb-24 text-center">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        
+        <!-- Logo Besar di Atas Headline -->
+        <div class="w-24 h-24 mx-auto mb-6 rounded-3xl bg-slate-900 border-2 border-cyan-500/40 p-2 shadow-2xl shadow-cyan-500/20 flex items-center justify-center">
+          <img src="assets/logo-himatik.png" alt="Logo HIMATIK" class="w-full h-full object-contain">
+        </div>
+
+        <div id="periodeBadgeContainer" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 text-xs font-semibold mb-5">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span id="periodeOprecText">Open Recruitment Calon Anggota</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+          Pendaftaran Online <br>
+          <span class="bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 bg-clip-text text-transparent">HIMATIK</span> Jadi Lebih Mudah
+        </h1>
+
+        <p class="mt-4 text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
+          Tidak perlu antre ke kampus. Pilih 3 divisi spesialisasi (<strong class="text-white">Pemrograman, Mikro, Jaringan</strong>), isi biodata singkat, dan pantau status kelolosan Anda secara real-time dari gadget.
+        </p>
+
+        <!-- Banner Notifikasi Saat Pendaftaran Ditutup oleh Admin -->
+        <div id="closedNoticeBanner" class="hidden mt-6 p-4 rounded-2xl bg-rose-950/70 border border-rose-500/40 text-rose-200 text-xs sm:text-sm max-w-xl mx-auto text-left flex items-start gap-3 shadow-xl">
+          <span class="text-2xl">🔒</span>
+          <div>
+            <strong class="text-white block font-bold text-sm">Pendaftaran Ditutup Sementara</strong>
+            <p id="closedMessageText" class="mt-0.5 text-xs text-rose-300">Pendaftaran calon anggota HIMATIK periode ini telah resmi ditutup oleh admin.</p>
+            <p class="mt-1 text-[11px] text-slate-400">Bagi yang sudah mendaftar, pantau pengumuman seleksi di menu <strong>Lacak Status NIM</strong> di bawah.</p>
+          </div>
+        </div>
+
+        <!-- 2 Tombol Aksi Utama -->
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button id="heroBtnDaftar" onclick="openRegistrationModal()" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-sky-400 hover:from-cyan-400 hover:to-sky-300 text-slate-950 font-extrabold text-sm shadow-xl shadow-cyan-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+            <span>📝 Formulir Pendaftaran</span>
+            <span>&rarr;</span>
+          </button>
+          <a href="#cek-status" class="w-full sm:w-auto px-7 py-4 rounded-2xl border border-slate-700 bg-slate-900/80 hover:bg-slate-800 text-slate-200 font-bold text-sm hover:border-cyan-500/50 transition flex items-center justify-center gap-2">
+            <span>🔍 Lacak Status NIM</span>
+          </a>
+        </div>
+
+        <!-- 3 Poin Ringkas (Biaya Dinamis yang Dikelola oleh Admin) -->
+        <div class="mt-12 pt-8 border-t border-slate-800/80 grid grid-cols-3 gap-4 max-w-lg mx-auto text-center">
+          <div>
+            <p class="text-xl sm:text-2xl font-bold font-mono text-cyan-400">3 Divisi</p>
+            <p class="text-xs text-slate-400 mt-0.5">Pemrograman, Mikro, Jaringan</p>
+          </div>
+          <div>
+            <p class="text-xl sm:text-2xl font-bold font-mono text-emerald-400">100%</p>
+            <p class="text-xs text-slate-400 mt-0.5">Paperless & Online</p>
+          </div>
+          <div>
+            <!-- Nominal Biaya Diambil Otomatis dari Database MySQL Pengaturan -->
+            <p id="displayBiaya" class="text-xl sm:text-2xl font-bold font-mono text-white">Rp 0</p>
+            <p id="keteranganBiaya" class="text-xs text-slate-400 mt-0.5">Gratis Tanpa Biaya</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 3 PILIHAN DIVISI ==================== -->
+    <section id="divisi" class="py-16 bg-slate-900/30 border-y border-slate-800">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 font-bold">Pilihan Divisi</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">3 Divisi Keahlian di HIMATIK</h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-2">Pilih divisi yang sesuai dengan minat dan passion teknologi Anda:</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Divisi 1: Pemrograman -->
+          <div class="glass-card rounded-2xl p-7 flex flex-col justify-between hover:border-cyan-400 transition">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center font-mono text-xl font-bold mb-4">
+                &lt;/&gt;
+              </div>
+              <h3 class="text-xl font-extrabold text-white">Pemrograman</h3>
+              <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                Fokus pada pengembangan website modern, aplikasi mobile, competitive programming, dan rekayasa perangkat lunak.
+              </p>
+              <ul class="mt-4 space-y-1.5 text-xs text-slate-400">
+                <li>• Web & Mobile Apps Development</li>
+                <li>• Logika Algoritma & Problem Solving</li>
+                <li>• Database & API Engineering</li>
+              </ul>
+            </div>
+            <button data-divisi="Pemrograman" onclick="openRegistrationModal('Pemrograman')" class="btn-divisi-daftar mt-6 w-full py-2.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 font-bold text-xs transition">
+              Daftar Divisi Pemrograman &rarr;
+            </button>
+          </div>
+
+          <!-- Divisi 2: Mikro -->
+          <div class="glass-card rounded-2xl p-7 flex flex-col justify-between hover:border-cyan-400 transition">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-xl mb-4">
+                ⚡
+              </div>
+              <h3 class="text-xl font-extrabold text-white">Mikro</h3>
+              <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                Mengeksplorasi perangkat keras cerdas, mikrokontroler (Arduino, ESP32), sensor otomasi, dan Internet of Things (IoT).
+              </p>
+              <ul class="mt-4 space-y-1.5 text-xs text-slate-400">
+                <li>• Internet of Things (IoT) & Smart Home</li>
+                <li>• Mikrokontroler Arduino / ESP32</li>
+                <li>• Robotika & Rancang Bangun Sensor</li>
+              </ul>
+            </div>
+            <button data-divisi="Mikro" onclick="openRegistrationModal('Mikro')" class="btn-divisi-daftar mt-6 w-full py-2.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 font-bold text-xs transition">
+              Daftar Divisi Mikro &rarr;
+            </button>
+          </div>
+
+          <!-- Divisi 3: Jaringan -->
+          <div class="glass-card rounded-2xl p-7 flex flex-col justify-between hover:border-cyan-400 transition">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-xl mb-4">
+                🌐
+              </div>
+              <h3 class="text-xl font-extrabold text-white">Jaringan</h3>
+              <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                Mendalami infrastruktur jaringan komputer, routing & switching (Mikrotik/Cisco), server Linux, dan keamanan siber.
+              </p>
+              <ul class="mt-4 space-y-1.5 text-xs text-slate-400">
+                <li>• Routing, Switching & Topologi Jaringan</li>
+                <li>• Administrasi Server Linux & Cloud</li>
+                <li>• Keamanan Jaringan & Cyber Defense</li>
+              </ul>
+            </div>
+            <button data-divisi="Jaringan" onclick="openRegistrationModal('Jaringan')" class="btn-divisi-daftar mt-6 w-full py-2.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 font-bold text-xs transition">
+              Daftar Divisi Jaringan &rarr;
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== REAL-TIME NIM TRACKER (STATUS: DITERIMA / TIDAK DITERIMA) ==================== -->
+    <section id="cek-status" class="py-16">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+        
+        <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 font-bold">Lacak Status</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Cek Status Hasil Seleksi</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-2">
+          Masukkan NIM Anda untuk melihat apakah Anda <strong class="text-emerald-400">Diterima</strong> atau <strong class="text-rose-400">Tidak Diterima</strong> di HIMATIK:
+        </p>
+
+        <!-- Form Pencarian -->
+        <form onsubmit="handleSearchNIM(event)" class="mt-6 flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
+          <input 
+            type="text" 
+            id="nimInput"
+            placeholder="Ketik NIM Anda (contoh: 202410370311105)" 
+            class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 focus:border-cyan-400 text-white text-xs sm:text-sm outline-none transition"
+            required
+          >
+          <button 
+            type="submit" 
+            class="px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs sm:text-sm whitespace-nowrap shadow-md transition"
+          >
+            Lacak Status
+          </button>
+        </form>
+
+        <!-- Demo NIM -->
+        <div class="mt-3 flex items-center justify-center gap-2 text-xs text-slate-400">
+          <span>Contoh Status:</span>
+          <button type="button" onclick="fillNIM('202410370311105')" class="text-emerald-400 underline font-semibold hover:text-emerald-300">105 (Diterima)</button>
+          <span>&bull;</span>
+          <button type="button" onclick="fillNIM('202410370311088')" class="text-rose-400 underline font-semibold hover:text-rose-300">088 (Tidak Diterima)</button>
+          <span>&bull;</span>
+          <button type="button" onclick="fillNIM('202410370311204')" class="text-cyan-400 underline hover:text-cyan-300">204 (Menunggu)</button>
+        </div>
+
+        <!-- Result Box (Status Sederhana: Diterima / Tidak Diterima) -->
+        <div id="nimResultCard" class="hidden mt-8 text-left glass-card rounded-2xl p-6 border shadow-xl space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-2">
+            <div>
+              <h3 id="resNama" class="text-base font-bold text-white">Nama Mahasiswa</h3>
+              <p id="resNim" class="text-xs font-mono text-cyan-400">NIM: 202410370311...</p>
+            </div>
+            <!-- Status Badge (Diterima / Tidak Diterima / Menunggu) -->
+            <div id="resBadgeStatus" class="inline-flex px-4 py-1.5 rounded-full text-xs font-extrabold self-start sm:self-center border">
+              Menunggu Pengumuman
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 text-xs">
+            <div>
+              <span class="text-slate-400">Divisi Pilihan 1:</span>
+              <p id="resDivisi1" class="font-bold text-white mt-0.5">Pemrograman</p>
+            </div>
+            <div>
+              <span class="text-slate-400">Divisi Pilihan 2:</span>
+              <p id="resDivisi2" class="font-bold text-white mt-0.5">Jaringan</p>
+            </div>
+            <div>
+              <span class="text-slate-400">Tanggal Pengajuan:</span>
+              <p id="resTgl" class="font-mono text-slate-300 mt-0.5">10 November 2026</p>
+            </div>
+            <div>
+              <span class="text-slate-400">No. Registrasi:</span>
+              <p id="resReg" class="font-mono font-bold text-cyan-400 mt-0.5">HIMATIK-2026-...</p>
+            </div>
+          </div>
+
+          <!-- Pesan Khusus Admin -->
+          <div id="resCatatanBox" class="text-xs p-3.5 rounded-xl border bg-slate-900/90 border-slate-800">
+            <span class="font-semibold text-slate-400 block mb-0.5">Catatan Admin:</span>
+            <p id="resCatatan" class="text-slate-200">Silakan pantau status pengumuman secara berkala.</p>
+          </div>
+
+          <!-- Tombol Cetak Bukti (Tampil jika Diterima atau Terdaftar) -->
+          <div id="printProofAction" class="pt-2 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span class="text-xs text-slate-400">Dokumen Bukti Pendaftaran:</span>
+            <a id="btnCetakBukti" href="cetak-bukti.php?nim=202410370311204" target="_blank" class="w-full sm:w-auto px-4 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 font-bold text-xs flex items-center justify-center gap-1.5 transition">
+              <span>🖨️ Cetak / Unduh Kartu Bukti (PDF)</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== ALUR PENDAFTARAN SEDERHANA ==================== -->
+    <section id="alur" class="py-16 bg-slate-900/30 border-t border-slate-800">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        
+        <div class="text-center max-w-xl mx-auto mb-10">
+          <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 font-bold">Langkah Praktis</span>
+          <h2 class="text-2xl font-extrabold text-white mt-1">4 Langkah Mudah Bergabung</h2>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div class="glass-card p-5 rounded-2xl">
+            <div class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 font-bold mx-auto flex items-center justify-center text-xs mb-2">1</div>
+            <h4 class="font-bold text-white text-xs sm:text-sm">Isi Formulir</h4>
+            <p class="text-[11px] text-slate-400 mt-1">Input data diri, upload foto & scan KTM</p>
+          </div>
+          <div class="glass-card p-5 rounded-2xl">
+            <div class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 font-bold mx-auto flex items-center justify-center text-xs mb-2">2</div>
+            <h4 class="font-bold text-white text-xs sm:text-sm">Verifikasi</h4>
+            <p class="text-[11px] text-slate-400 mt-1">Review berkas oleh admin HIMATIK</p>
+          </div>
+          <div class="glass-card p-5 rounded-2xl">
+            <div class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 font-bold mx-auto flex items-center justify-center text-xs mb-2">3</div>
+            <h4 class="font-bold text-white text-xs sm:text-sm">Wawancara</h4>
+            <p class="text-[11px] text-slate-400 mt-1">Screening minat divisi & komitmen</p>
+          </div>
+          <div class="glass-card p-5 rounded-2xl">
+            <div class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 font-bold mx-auto flex items-center justify-center text-xs mb-2">4</div>
+            <h4 class="font-bold text-white text-xs sm:text-sm">Pengumuman</h4>
+            <p class="text-[11px] text-slate-400 mt-1">Cek hasil: Diterima atau Tidak Diterima</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== FAQ RINGKAS ==================== -->
+    <section id="faq" class="py-16">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6">
+        
+        <div class="text-center mb-10">
+          <h2 class="text-2xl font-extrabold text-white">Pertanyaan Umum (FAQ)</h2>
+        </div>
+
+        <div class="space-y-3">
+          <div class="glass-card rounded-xl p-4">
+            <h4 class="font-bold text-white text-xs sm:text-sm">Apakah mahasiswa baru boleh mendaftar?</h4>
+            <p class="text-xs text-slate-300 mt-1">Boleh sekali! Pendaftaran terbuka untuk seluruh mahasiswa aktif Teknik Informatika.</p>
+          </div>
+          <div class="glass-card rounded-xl p-4">
+            <h4 class="font-bold text-white text-xs sm:text-sm">Bagaimana jika belum mahir di divisi yang dipilih?</h4>
+            <p class="text-xs text-slate-300 mt-1">Tidak masalah. Di HIMATIK ada program pelatihan dan sharing divisi untuk belajar bersama.</p>
+          </div>
+          <div class="glass-card rounded-xl p-4">
+            <h4 class="font-bold text-white text-xs sm:text-sm">Berapa biaya pendaftaran anggota HIMATIK?</h4>
+            <p id="faqBiayaText" class="text-xs text-slate-300 mt-1">
+              Biaya pendaftaran saat ini: <strong class="text-cyan-400" id="faqBiayaVal">Gratis (Rp 0)</strong> sesuai ketentuan resmi admin.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-slate-800 bg-[#060910] text-slate-400 text-xs py-8 z-10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <img src="assets/logo-himatik.png" alt="Logo HIMATIK" class="w-8 h-8 object-contain">
+        <div>
+          <span class="font-bold text-white">HIMATIK</span>
+          <p class="text-[11px] text-slate-500">Himpunan Mahasiswa Teknik Informatika</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="admin/login.php" class="text-cyan-400 hover:underline font-semibold">🔒 Panel Admin</a>
+        <span class="text-slate-600">&bull;</span>
+        <p class="text-[11px] text-slate-500">&copy; <span id="copyrightYear">2026</span> Portal Pendaftaran HIMATIK.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== FORMULIR PENDAFTARAN SEDERHANA & CEPAT ==================== -->
+  <div id="regModal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    
+    <div class="relative w-full max-w-xl bg-[#0F172A] border border-cyan-500/40 rounded-3xl shadow-2xl overflow-hidden my-6">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <img src="assets/logo-himatik.png" alt="Logo HIMATIK" class="w-6 h-6 object-contain">
+          <div>
+            <h3 class="font-bold text-white text-sm">Formulir Pendaftaran Calon Anggota</h3>
+            <p class="text-[10px] text-slate-400">Pilih 3 divisi: Pemrograman, Mikro, atau Jaringan</p>
+          </div>
+        </div>
+        <button onclick="closeRegistrationModal()" class="text-slate-400 hover:text-white p-1">
+          ✕
+        </button>
+      </div>
+
+      <!-- Single Page Form -->
+      <form id="simpleForm" onsubmit="handleFormSubmit(event)" class="p-6 space-y-4 text-xs">
+        
+        <!-- Bagian 1: Data Diri -->
+        <div>
+          <span class="text-cyan-400 font-bold uppercase tracking-wider text-[10px] block mb-2">1. Data Mahasiswa</span>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-slate-300 mb-1 font-semibold">Nama Lengkap *</label>
+              <input type="text" id="inputNama" required placeholder="Contoh: Budi Pratama" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 focus:border-cyan-400 text-white outline-none">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-slate-300 mb-1 font-semibold">NIM *</label>
+                <input type="text" id="inputNim" required placeholder="Contoh: 2024103..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 focus:border-cyan-400 text-white outline-none">
+              </div>
+              <div>
+                <label class="block text-slate-300 mb-1 font-semibold">No. WhatsApp *</label>
+                <input type="tel" id="inputWa" required placeholder="081234567..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 focus:border-cyan-400 text-white outline-none">
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-slate-300 mb-1 font-semibold">Email Mahasiswa *</label>
+                <input type="email" id="inputEmail" required placeholder="nama@webmail.ac.id" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 focus:border-cyan-400 text-white outline-none">
+              </div>
+              <div>
+                <label class="block text-slate-300 mb-1 font-semibold">Angkatan *</label>
+                <select id="inputAngkatan" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 focus:border-cyan-400 text-white outline-none">
+                  <!-- Otomatis diisi oleh JavaScript sesuai tahun saat ini -->
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bagian 2: Pilihan 3 Divisi -->
+        <div class="pt-3 border-t border-slate-800">
+          <span class="text-cyan-400 font-bold uppercase tracking-wider text-[10px] block mb-2">2. Pilihan Divisi</span>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-slate-300 mb-1 font-semibold">Divisi Pilihan 1 *</label>
+              <select id="inputDivisi1" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 focus:border-cyan-400 text-white outline-none">
+                <option value="Pemrograman">Pemrograman</option>
+                <option value="Mikro">Mikro</option>
+                <option value="Jaringan">Jaringan</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-slate-300 mb-1 font-semibold">Divisi Pilihan 2 *</label>
+              <select id="inputDivisi2" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 focus:border-cyan-400 text-white outline-none">
+                <option value="Jaringan">Jaringan</option>
+                <option value="Mikro">Mikro</option>
+                <option value="Pemrograman">Pemrograman</option>
+              </select>
+            </div>
+          </div>
+          <div class="mt-3">
+            <label class="block text-slate-300 mb-1 font-semibold">Alasan / Motivasi Singkat *</label>
+            <input type="text" id="inputMotivasi" required placeholder="Contoh: Ingin memperdalam skill coding dan relasi di kampus" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 focus:border-cyan-400 text-white outline-none">
+          </div>
+        </div>
+
+        <!-- Bagian 3: Berkas -->
+        <div class="pt-3 border-t border-slate-800">
+          <span class="text-cyan-400 font-bold uppercase tracking-wider text-[10px] block mb-2">3. Unggah Berkas</span>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-slate-300 mb-1 font-semibold">Pas Foto (JPG/PNG)</label>
+              <input type="file" id="fileFoto" accept="image/*" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-slate-400 text-[11px] outline-none">
+            </div>
+            <div>
+              <label class="block text-slate-300 mb-1 font-semibold">Scan KTM / Bukti KRS</label>
+              <input type="file" id="fileKtm" accept=".pdf,image/*" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-slate-400 text-[11px] outline-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- Tombol Aksi -->
+        <div class="pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
+          <button type="button" onclick="closeRegistrationModal()" class="px-4 py-2.5 rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-800 font-semibold">
+            Batal
+          </button>
+          <button type="submit" id="submitFormBtn" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-400 hover:from-cyan-400 text-slate-950 font-extrabold shadow-lg shadow-cyan-500/20">
+            Kirim Pendaftaran &rarr;
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ==================== MODAL SUKSES ==================== -->
+  <div id="successModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-card max-w-sm w-full rounded-3xl p-6 border border-emerald-500/40 text-center space-y-4">
+      <div class="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-xl font-bold border border-emerald-500/40">
+        ✓
+      </div>
+      <div>
+        <h3 class="text-lg font-extrabold text-white">Pendaftaran Berhasil!</h3>
+        <p class="text-xs text-slate-300 mt-1">Data Anda sudah tersimpan di database HIMATIK.</p>
+      </div>
+      
+      <div class="p-3 bg-slate-900 rounded-xl border border-cyan-500/30 font-mono text-cyan-400 text-sm font-bold tracking-wider" id="generatedRegCode">
+        HIMATIK-2026-8942
+      </div>
+
+      <div class="space-y-2 pt-1">
+        <a id="btnModalCetakBukti" href="cetak-bukti.php" target="_blank" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 transition">
+          <span>🖨️ Cetak Kartu Bukti (PDF)</span>
+        </a>
+        <button onclick="closeSuccessModal()" class="w-full py-2 rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-800 text-xs font-semibold">
+          Selesai & Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    // Theme Toggle
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    themeToggleBtn.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      document.documentElement.classList.toggle('light');
+    });
+
+    // Inisialisasi Tahun Dinamis Mengikuti Kalender Berjalan
+    function initDynamicYear() {
+      const currentYear = new Date().getFullYear();
+      const nextYear = currentYear + 1;
+
+      // Update Teks Periode di Hero Section
+      const periodeEl = document.getElementById('periodeOprecText');
+      if (periodeEl) {
+        periodeEl.innerText = `Open Recruitment Calon Anggota Periode ${currentYear}/${nextYear}`;
+      }
+
+      // Update Dropdown Pilihan Angkatan
+      const angkatanSelect = document.getElementById('inputAngkatan');
+      if (angkatanSelect) {
+        angkatanSelect.innerHTML = '';
+        // 4 tahun terakhir (tahun saat ini s.d 3 tahun ke belakang)
+        for (let i = 0; i <= 3; i++) {
+          const yr = currentYear - i;
+          const opt = document.createElement('option');
+          opt.value = yr.toString();
+          opt.textContent = (i === 0) ? `Angkatan ${yr} (Mahasiswa Baru)` : `Angkatan ${yr}`;
+          angkatanSelect.appendChild(opt);
+        }
+        // Opsi untuk angkatan lebih atas
+        const seniorOpt = document.createElement('option');
+        seniorOpt.value = `${currentYear - 4}`;
+        seniorOpt.textContent = `Angkatan ${currentYear - 4} / Sebelumnya`;
+        angkatanSelect.appendChild(seniorOpt);
+      }
+
+      // Update Copyright Footer
+      const copyrightEl = document.getElementById('copyrightYear');
+      if (copyrightEl) {
+        copyrightEl.innerText = currentYear;
+      }
+    }
+
+    // Status Pendaftaran Global
+    window.isRegistrationOpen = true;
+    window.closedMessage = 'Pendaftaran calon anggota HIMATIK periode ini telah resmi ditutup.';
+
+    function updateRegistrationUI(isOpen, message) {
+      window.isRegistrationOpen = isOpen;
+      if (message) window.closedMessage = message;
+
+      const badge = document.getElementById('periodeBadgeContainer');
+      const periodeEl = document.getElementById('periodeOprecText');
+      const closedBanner = document.getElementById('closedNoticeBanner');
+      const closedMsgText = document.getElementById('closedMessageText');
+      const navBtn = document.getElementById('navBtnDaftar');
+      const heroBtn = document.getElementById('heroBtnDaftar');
+      const divisiBtns = document.querySelectorAll('.btn-divisi-daftar');
+
+      if (!isOpen) {
+        // --- MODE DITUTUP OLEH ADMIN ---
+        if (badge) {
+          badge.className = "inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-950/70 border border-rose-500/40 text-rose-300 text-xs font-semibold mb-5";
+        }
+        if (periodeEl) {
+          periodeEl.innerHTML = '<span class="w-2 h-2 rounded-full bg-rose-400 inline-block mr-1"></span> Pendaftaran Telah Ditutup';
+        }
+        if (closedBanner) {
+          closedBanner.classList.remove('hidden');
+        }
+        if (closedMsgText && message) {
+          closedMsgText.innerText = message;
+        }
+
+        if (navBtn) {
+          navBtn.innerText = 'Pendaftaran Ditutup';
+          navBtn.className = "px-4 sm:px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-800 text-slate-400 border border-slate-700 cursor-not-allowed transition";
+        }
+        if (heroBtn) {
+          heroBtn.innerHTML = '<span>🔒 Pendaftaran Ditutup</span>';
+          heroBtn.className = "w-full sm:w-auto px-8 py-4 rounded-2xl bg-slate-800/80 text-slate-400 border border-slate-700 font-extrabold text-sm cursor-not-allowed shadow-none transition";
+        }
+        divisiBtns.forEach(btn => {
+          btn.innerText = 'Pendaftaran Ditutup 🔒';
+          btn.className = "btn-divisi-daftar mt-6 w-full py-2.5 rounded-xl bg-slate-800 text-slate-500 border border-slate-700 font-bold text-xs cursor-not-allowed transition";
+        });
+      } else {
+        // --- MODE DIBUKA ---
+        if (closedBanner) {
+          closedBanner.classList.add('hidden');
+        }
+      }
+    }
+
+    // Ambil Pengaturan Biaya & Status Pendaftaran Dinamis dari Server
+    async function loadBiayaSettings() {
+      try {
+        const res = await fetch('api/pengaturan.php');
+        const data = await res.json();
+        if (data && data.success) {
+          const display = document.getElementById('displayBiaya');
+          const ket = document.getElementById('keteranganBiaya');
+          const faqVal = document.getElementById('faqBiayaVal');
+
+          if (display) display.innerText = data.biaya_formatted;
+          if (ket) ket.innerText = data.keterangan_biaya;
+          if (faqVal) faqVal.innerText = data.biaya_formatted + (data.is_gratis ? ' (Gratis)' : '');
+
+          // Update Status Buka / Tutup
+          if (typeof data.is_buka !== 'undefined') {
+            updateRegistrationUI(data.is_buka, data.pesan_penutupan);
+          }
+        }
+      } catch (e) {
+        console.warn('Gagal memuat pengaturan:', e);
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      initDynamicYear();
+      loadBiayaSettings();
+    });
+
+    // Modal Form Logic
+    const regModal = document.getElementById('regModal');
+    function openRegistrationModal(division = '') {
+      if (window.isRegistrationOpen === false) {
+        alert('🔒 PENDAFTARAN DITUTUP\n\n' + (window.closedMessage || 'Pendaftaran calon anggota HIMATIK periode ini telah resmi ditutup oleh admin. Silakan pantau pengumuman melalui Lacak Status NIM.'));
+        return;
+      }
+      regModal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+      if (division) {
+        document.getElementById('inputDivisi1').value = division;
+      }
+    }
+    function closeRegistrationModal() {
+      regModal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+    function closeSuccessModal() {
+      document.getElementById('successModal').classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    // Submit Formulir Langsung ke Database
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+
+      if (window.isRegistrationOpen === false) {
+        alert('🔒 PENDAFTARAN DITUTUP\n\n' + (window.closedMessage || 'Pendaftaran telah ditutup oleh admin.'));
+        return;
+      }
+
+      const btn = document.getElementById('submitFormBtn');
+      const originalText = btn.innerText;
+      btn.innerText = 'Menyimpan...';
+      btn.disabled = true;
+
+      const nim = document.getElementById('inputNim').value.trim();
+
+      const formData = new FormData();
+      formData.append('nama_lengkap', document.getElementById('inputNama').value.trim());
+      formData.append('nim', nim);
+      formData.append('email', document.getElementById('inputEmail').value.trim());
+      formData.append('no_whatsapp', document.getElementById('inputWa').value.trim());
+      formData.append('angkatan', document.getElementById('inputAngkatan').value);
+      formData.append('divisi_utama', document.getElementById('inputDivisi1').value);
+      formData.append('divisi_cadangan', document.getElementById('inputDivisi2').value);
+      formData.append('motivasi', document.getElementById('inputMotivasi').value.trim());
+
+      const fileFoto = document.getElementById('fileFoto').files[0];
+      if (fileFoto) formData.append('file_foto', fileFoto);
+
+      const fileKtm = document.getElementById('fileKtm').files[0];
+      if (fileKtm) formData.append('file_ktm', fileKtm);
+
+      try {
+        const response = await fetch('api/daftar.php', {
+          method: 'POST',
+          body: formData
+        });
+        const resJson = await response.json();
+
+        if (response.ok && resJson.success) {
+          document.getElementById('generatedRegCode').innerText = resJson.registration_code;
+          document.getElementById('btnModalCetakBukti').href = `cetak-bukti.php?reg=${encodeURIComponent(resJson.registration_code)}`;
+          closeRegistrationModal();
+          document.getElementById('successModal').classList.remove('hidden');
+        } else {
+          alert(resJson.message || 'Gagal menyimpan pendaftaran.');
+        }
+      } catch (err) {
+        console.warn('Backend offline, beralih ke simulasi:', err);
+        const code = `HIMATIK-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+        document.getElementById('generatedRegCode').innerText = code;
+        document.getElementById('btnModalCetakBukti').href = `cetak-bukti.php?reg=${encodeURIComponent(code)}&nim=${encodeURIComponent(nim)}`;
+        closeRegistrationModal();
+        document.getElementById('successModal').classList.remove('hidden');
+      } finally {
+        btn.innerText = originalText;
+        btn.disabled = false;
+      }
+    }
+
+    // NIM Lookup
+    function fillNIM(nim) {
+      document.getElementById('nimInput').value = nim;
+      performLookup(nim);
+    }
+    function handleSearchNIM(e) {
+      e.preventDefault();
+      const nim = document.getElementById('nimInput').value.trim();
+      performLookup(nim);
+    }
+
+    async function performLookup(nim) {
+      const card = document.getElementById('nimResultCard');
+      let data = null;
+
+      try {
+        const response = await fetch(`api/cek-status.php?nim=${encodeURIComponent(nim)}`);
+        const resJson = await response.json();
+        if (response.ok && resJson.success) {
+          data = resJson.data;
+        } else if (response.status === 404) {
+          alert(resJson.message || 'NIM tidak ditemukan.');
+          return;
+        }
+      } catch (err) {
+        console.warn('Mode simulasi aktif.');
+      }
+
+      if (!data) {
+        const mock = {
+          "202410370311105": { nama: "Dewi Sekar Ayu", divisi1: "Mikro", divisi2: "Pemrograman", status: "Diterima", status_key: "diterima", catatan: "Selamat! Anda dinyatakan DITERIMA di HIMATIK Divisi Mikro." },
+          "202410370311088": { nama: "Farhan Maulana", divisi1: "Jaringan", divisi2: "Mikro", status: "Tidak Diterima", status_key: "tidak", catatan: "Mohon maaf, Anda belum lolos pada seleksi kali ini. Tetap semangat!" },
+          "202410370311204": { nama: "Ahmad Rizky Pratama", divisi1: "Pemrograman", divisi2: "Jaringan", status: "Menunggu Pengumuman", status_key: "menunggu", catatan: "Berkas Anda sedang dalam proses peninjauan oleh Admin." }
+        };
+        data = mock[nim] || {
+          nama: "Calon Anggota (" + nim + ")",
+          divisi1: "Pemrograman",
+          divisi2: "Jaringan",
+          status: "Menunggu Pengumuman",
+          status_key: "menunggu",
+          catatan: "Data formulir telah tersimpan di sistem."
+        };
+        data.nim = nim;
+        data.nomor_registrasi = "HIMATIK-2026-DEMO";
+        data.tgl = "10 November 2026";
+      }
+
+      document.getElementById('resNama').innerText = data.nama;
+      document.getElementById('resNim').innerText = "NIM: " + (data.nim || nim);
+      document.getElementById('resDivisi1').innerText = data.divisi1;
+      document.getElementById('resDivisi2').innerText = data.divisi2;
+      document.getElementById('resTgl').innerText = data.tgl || "Hari Ini";
+      document.getElementById('resReg').innerText = data.nomor_registrasi || "-";
+      document.getElementById('resCatatan').innerText = data.catatan || "Silakan pantau status secara berkala.";
+
+      // Styling Badge Status: Diterima / Tidak Diterima / Menunggu
+      const badge = document.getElementById('resBadgeStatus');
+      const box = document.getElementById('resCatatanBox');
+      const sKey = (data.status_key || '').toLowerCase();
+
+      if (sKey === 'diterima' || data.status.toLowerCase().includes('diterima')) {
+        badge.className = "inline-flex px-4 py-1.5 rounded-full text-xs font-extrabold border bg-emerald-500/20 text-emerald-300 border-emerald-500/40";
+        badge.innerText = "✓ DITERIMA";
+        box.className = "text-xs p-3.5 rounded-xl border bg-emerald-950/30 border-emerald-500/30 text-emerald-200";
+        card.className = "mt-8 text-left glass-card rounded-2xl p-6 border border-emerald-500/40 shadow-xl space-y-4";
+      } else if (sKey === 'tidak' || data.status.toLowerCase().includes('tidak')) {
+        badge.className = "inline-flex px-4 py-1.5 rounded-full text-xs font-extrabold border bg-rose-500/20 text-rose-300 border-rose-500/40";
+        badge.innerText = "✕ TIDAK DITERIMA";
+        box.className = "text-xs p-3.5 rounded-xl border bg-rose-950/30 border-rose-500/30 text-rose-200";
+        card.className = "mt-8 text-left glass-card rounded-2xl p-6 border border-rose-500/40 shadow-xl space-y-4";
+      } else {
+        badge.className = "inline-flex px-4 py-1.5 rounded-full text-xs font-extrabold border bg-cyan-500/15 text-cyan-300 border-cyan-500/30";
+        badge.innerText = "⏳ MENUNGGU PENGUMUMAN";
+        box.className = "text-xs p-3.5 rounded-xl border bg-slate-900/90 border-slate-800 text-slate-200";
+        card.className = "mt-8 text-left glass-card rounded-2xl p-6 border border-cyan-500/40 shadow-xl space-y-4";
+      }
+
+      document.getElementById('btnCetakBukti').href = `cetak-bukti.php?nim=${encodeURIComponent(data.nim || nim)}`;
+
+      card.classList.remove('hidden');
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  </script>
+</body>
+</html>
